@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Hollow Knight - Hallownest Archive</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hkdark: '#0f1015',
+                        hkcard: '#161821',
+                        hkgold: '#d4af37',
+                        hkblue: '#202b38',
+                        hkaccent: '#c5a880'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0c10;
+            color: #d1d5db;
+        }
+        h1, h2, h3, .cinzel-font {
+            font-family: 'Cinzel', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1015;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2d3d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+        ::selection {
+            background-color: #eab308;
+            color: #000000;
+        }
+        /* Estilos do formulário */
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.625rem 1rem;
+            background-color: #0f1015;
+            border: 1px solid #1f2937;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            color: #e5e7eb;
+            outline: none;
+            transition: border-color 0.2s ease, ring 0.2s ease;
+        }
+        .form-input::placeholder {
+            color: #4b5563;
+        }
+        .form-input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0b0c10] text-gray-300 flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+
+    <header class="relative bg-gradient-to-b from-[#0f1015] to-[#0b0c10] border-b border-yellow-600/25 py-12 px-4 text-center overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <span class="inline-block px-3 py-1 mb-3 text-xs font-semibold tracking-widest text-yellow-500 uppercase bg-yellow-500/10 rounded-full border border-yellow-500/20">
+                Arquivo de Hallownest
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 tracking-wide mb-3">
+                Catálogo de Hollow Knight
+            </h1>
+            <p class="text-base md:text-lg text-gray-400 italic tracking-wider">
+                "Ajoelhe-se diante de Hallownest"
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+        <!-- Controls: Search, Filters & Form Button -->
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-4 mb-10">
+            <!-- Search bar -->
+            <div class="relative w-full lg:w-80">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Buscar habitante ou lenda..." 
+                    class="w-full pl-10 pr-4 py-3 bg-[#161821] border border-gray-800 rounded-xl text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-yellow-500/60 focus:ring-1 focus:ring-yellow-500/60 transition-all shadow-inner">
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 w-full lg:w-auto">
+                <button onclick="filterCategory('todos')" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-yellow-500 text-black transition-all shadow-md">
+                    Todos
+                </button>
+                <button onclick="filterCategory('Personagem')" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#161821] hover:bg-[#202b38] text-gray-300 border border-gray-800 transition-all">
+                    Personagens
+                </button>
+                <button onclick="filterCategory('Chefe')" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#161821] hover:bg-[#202b38] text-gray-300 border border-gray-800 transition-all">
+                    Chefes
+                </button>
+                <button onclick="filterCategory('Amigável')" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#161821] hover:bg-[#202b38] text-gray-300 border border-gray-800 transition-all">
+                    Amigáveis
+                </button>
+                <button onclick="filterCategory('Área')" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#161821] hover:bg-[#202b38] text-gray-300 border border-gray-800 transition-all">
+                    Áreas
+                </button>
+            </div>
+
+            <!-- Formulário Button -->
+            <button onclick="openFormModal()" class="w-full lg:w-auto px-5 py-3 bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-black font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Formulário</span>
+            </button>
+        </div>
+
+        <!-- Cards Grid -->
+        <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Populated via JavaScript -->
+        </div>
+
+        <!-- Empty state message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fa-solid fa-ghost text-5xl text-gray-600 mb-4 animate-bounce"></i>
+            <h3 class="text-xl font-semibold text-gray-400 cinzel-font">Nenhuma alma encontrada nas profundezas...</h3>
+            <p class="text-sm text-gray-500 mt-1">Tente buscar por outro termo.</p>
+        </div>
+    </main>
+
+    <!-- Modal Detail Overlay -->
+    <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div id="modalContent" class="bg-[#161821] border border-yellow-600/30 rounded-2xl max-w-xl w-full p-6 sm:p-8 relative transform scale-95 transition-transform duration-300 shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-yellow-500 transition-colors p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 rounded-xl overflow-hidden bg-[#0f1015] border border-gray-800 flex items-center justify-center relative">
+                    <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
+                    <div id="modalCategoryBadge" class="absolute bottom-2 left-2 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-black/70 text-yellow-400 border border-yellow-500/30"></div>
+                </div>
+                <div class="flex-grow text-center sm:text-left">
+                    <h2 id="modalTitle" class="text-2xl font-bold text-yellow-400 cinzel-font mb-2"></h2>
+                    <p id="modalDescription" class="text-sm text-gray-300 leading-relaxed mb-4"></p>
+                    <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-800 text-xs">
+                        <div>
+                            <span class="block text-gray-500 uppercase font-semibold">Localização / Origem</span>
+                            <span id="modalLocation" class="text-gray-200 font-medium"></span>
+                        </div>
+                        <div>
+                            <span class="block text-gray-500 uppercase font-semibold">Estatística / Detalhe</span>
+                            <span id="modalStats" class="text-yellow-500 font-medium"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="closeModal()" class="px-5 py-2 bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-black font-semibold text-xs uppercase tracking-wider rounded-lg transition-all shadow-md">
+                    Fechar Arquivo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form Overlay -->
+    <div id="formModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div id="formModalContent" class="bg-[#161821] border border-yellow-600/30 rounded-2xl max-w-md w-full p-6 sm:p-8 relative transform scale-95 transition-transform duration-300 shadow-2xl">
+            <button onclick="closeFormModal()" class="absolute top-4 right-4 text-gray-400 hover:text-yellow-500 transition-colors p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            
+            <h2 class="text-2xl font-bold text-yellow-400 cinzel-font mb-4">Novo Registro</h2>
+            
+            <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="form-label">Nome do Habitante/Lenda</label>
+                    <input type="text" id="inputName" required placeholder="Ex: Quirrel" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">Categoria</label>
+                    <select id="inputCategory" class="form-input">
+                        <option value="Personagem">Personagem</option>
+                        <option value="Chefe">Chefe</option>
+                        <option value="Amigável">Amigável</option>
+                        <option value="Área">Área</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="form-label">Localização</label>
+                        <input type="text" id="inputLocation" required placeholder="Ex: Cidade das Lágrimas" class="form-input">
+                    </div>
+                    <div>
+                        <label class="form-label">Estatística / Status</label>
+                        <input type="text" id="inputStats" required placeholder="Ex: HP: 500" class="form-input">
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">Descrição</label>
+                    <textarea id="inputDescription" rows="3" required placeholder="Detalhes sobre a lenda..." class="form-input"></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeFormModal()" class="px-4 py-2 bg-[#202b38] hover:bg-gray-800 text-gray-300 font-semibold text-xs uppercase rounded-lg transition-all">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold text-xs uppercase rounded-lg transition-all shadow">Salvar Registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f1015] border-t border-gray-900 py-6 px-4 text-center text-xs text-gray-500">
+        <p>Catálogo inspirado no universo de <strong>Hollow Knight</strong> por Team Cherry.</p>
+        <p class="mt-1">Criado com HTML5, Tailwind CSS e JavaScript Puro.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Default initial dataset
+        const defaultCatalogData = [
+            {
+                id: 1,
+                name: "O Cavaleiro (The Knight)",
+                category: "Personagem",
+                description: "O protagonista silencioso de Hollow Knight. Um pequeno vaso sem mente ou voz, armado com um ferrão, que desce às profundezas de Hallownest em busca de seu destino.",
+                location: "Boca do Abismo / Vermina",
+                stats: "Vida: 5-9 Máscaras",
+                badge: "Protagonista",
+                image: "https://placehold.co/400x400/161821/d4af37?text=The+Knight"
+            },
+            {
+                id: 2,
+                name: "Hornet",
+                category: "Personagem",
+                description: "A protetora hábil de Hallownest, empunhando uma agulha e linha afiada como navalha. Filha de Herrah, a Besta, e do Rei Pálido.",
+                location: "Caminho Verde / Borda do Reino",
+                stats: "Guerreira Ágil",
+                badge: "Protetora",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Hornet"
+            },
+            {
+                id: 3,
+                name: "Quirrel",
+                category: "Amigável",
+                description: "Um viajante misterioso e amigável que investiga as ruínas de Hallownest. Ele empunha um ferrão em forma de espada curvada e parece ter uma ligação profunda com o Monge Mestre Monomon.",
+                location: "Vários locais de Hallownest",
+                stats: "Viajante Sábio",
+                badge: "Amigo",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Quirrel"
+            },
+            {
+                id: 4,
+                name: "Zote, o Poderoso",
+                category: "Amigável",
+                description: "Um guerreiro auto-proclamado que viaja por Hallownest seguindo seus 'Cinquenta Preceitos'. Embora se gabe muito de suas habilidades, ele carece de talento real.",
+                location: "Cemitério dos Esquecidos / Cidade das Lágrimas",
+                stats: "Zero Poder de Combate",
+                badge: "Preceitos",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Zote"
+            },
+            {
+                id: 5,
+                name: "O Cavaleiro Vazio (Hollow Knight)",
+                category: "Chefe",
+                description: "O vaso que cresceu e foi treinado para conter a Infecção de Radiância. Corrompido pela mente que adquiriu, tornou-se um trágico casca vazia tomado pelo tormento.",
+                location: "Templo do Ovo Negro",
+                stats: "HP: 1100 (Fase 1)",
+                badge: "Boss Final",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Hollow+Knight"
+            },
+            {
+                id: 6,
+                name: "Chefe Grimm",
+                category: "Chefe",
+                description: "O mestre da Trupe Grimm, uma trupe circense misteriosa e teatral que viaja por pesadelos e chama o pesadelo escarlate em troca de chamas de fogo sagrado.",
+                location: "Penhascos Uivantes (Tenda)",
+                stats: "HP: 900+ (Dançarino Feroz)",
+                badge: "Chefe da Trupe",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Troupe+Master+Grimm"
+            },
+            {
+                id: 7,
+                name: "Cornifer & Iselda",
+                category: "Amigável",
+                description: "Cornifer é o cartógrafo alegre que mapeia as perigosas zonas de Hallownest, enquanto sua esposa Iselda gerencia a lojinha de mapas e bugigangas na Cidade das Lágrimas.",
+                location: "Boca da Vila / Loja de Mapas",
+                stats: "Comerciantes",
+                badge: "Cartógrafo",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Cornifer+%26+Iselda"
+            },
+            {
+                id: 8,
+                name: "O Colecionador",
+                category: "Chefe",
+                description: "Uma criatura esguia e frenética criada pela Torre do Amor. Ele aprisiona criaturas inocentes de Hallownest em potes de vidro por puro amor distorcido.",
+                location: "Torre do Amor (Cidade das Lágrimas)",
+                stats: "HP: 700",
+                badge: "Chefe Secreto",
+                image: "https://placehold.co/400x400/161821/d4af37?text=The+Collector"
+            },
+            {
+                id: 9,
+                name: "Boca do Mudo (Dirtmouth)",
+                category: "Área",
+                description: "A vila pacata e solitária na superfície, situada diretamente acima das ruínas do vasto reino subterrâneo de Hallownest. Poucos insetos ainda residem aqui.",
+                location: "Superfície",
+                stats: "Zona Segura Inicial",
+                badge: "Ponto Inicial",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Dirtmouth"
+            },
+            {
+                id: 10,
+                name: "Cidade das Lágrimas",
+                category: "Área",
+                description: "A magnífica e eterna capital do reino, onde a chuva chove constantemente do teto da caverna através de lágrimas de tristeza pelas tragédias de Hallownest.",
+                location: "Centro de Hallownest",
+                stats: "Zona Capital",
+                badge: "Capital",
+                image: "https://placehold.co/400x400/161821/d4af37?text=City+of+Tears"
+            },
+            {
+                id: 11,
+                name: "Bica do Reino (Greenpath)",
+                category: "Área",
+                description: "Uma floresta subterrânea exuberante cheia de vegetação ácida, musgos bioluminescentes e habitantes territoriais.",
+                location: "Lado Oeste Superior",
+                stats: "Área Natural",
+                badge: "Floresta",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Greenpath"
+            },
+            {
+                id: 12,
+                name: "Mantis Lordes",
+                category: "Chefe",
+                description: "As líderes orgulhosas e ferozes da Tribo Mantis nas Ermas Fúngicas. Elas mantêm os infectados afastados e respeitam guerreiros dignos que as desafiam em combate honrado.",
+                location: "Vila Mantis (Ermas Fúngicas)",
+                stats: "HP: 650 (Três Irmãs)",
+                badge: "Líderes",
+                image: "https://placehold.co/400x400/161821/d4af37?text=Mantis+Lords"
+            }
+        ];
+
+        // Load catalog data from localStorage if available, otherwise use default
+        let catalogData = JSON.parse(localStorage.getItem('hallownest_catalog')) || defaultCatalogData;
+
+        function saveToLocalStorage() {
+            localStorage.setItem('hallownest_catalog', JSON.stringify(catalogData));
+        }
+
+        let currentCategory = 'todos';
+        let searchQuery = '';
+
+        // Render catalog cards
+        function renderCatalog() {
+            const grid = document.getElementById('catalogGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            const filtered = catalogData.filter(item => {
+                const matchesCategory = currentCategory === 'todos' || item.category === currentCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.location.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "bg-[#161821] border border-gray-800 hover:border-yellow-600/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1";
+                    
+                    card.innerHTML = `
+                        <div class="relative h-48 bg-[#0f1015] overflow-hidden">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-md bg-black/70 backdrop-blur-md text-yellow-400 border border-yellow-500/30">
+                                ${item.category}
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-md bg-yellow-500 text-black shadow">
+                                ${item.badge}
+                            </span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-yellow-100 group-hover:text-yellow-400 transition-colors cinzel-font mb-2">
+                                    ${item.name}
+                                </h3>
+                                <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                                    ${item.description}
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between text-xs">
+                                <span class="text-gray-500 truncate max-w-[120px]" title="${item.location}">
+                                    <i class="fa-solid fa-location-dot mr-1 text-yellow-600"></i> ${item.location}
+                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="deleteItem(${item.id})" title="Deletar registro" class="p-2 bg-red-950/40 hover:bg-red-900 text-red-400 hover:text-white rounded-lg transition-all border border-red-900/30 shadow-sm">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                    <button onclick="openModal(${item.id})" class="px-3 py-1.5 bg-[#202b38] hover:bg-yellow-600 hover:text-black text-yellow-400 font-semibold rounded-lg transition-all border border-yellow-500/20 shadow-sm flex items-center gap-1">
+                                        <span>Ver</span>
+                                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // Delete item from catalog dataset and update localStorage
+        function deleteItem(id) {
+            if (confirm("Tem certeza que deseja apagar este registro das profundezas de Hallownest?")) {
+                catalogData = catalogData.filter(item => item.id !== id);
+                saveToLocalStorage();
+                renderCatalog();
+            }
+        }
+
+        // Filter category handling
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.textContent.trim().toLowerCase() === category.toLowerCase() || (category === 'todos' && btn.textContent.trim().toLowerCase() === 'todos')) {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-yellow-500 text-black transition-all shadow-md";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg bg-[#161821] hover:bg-[#202b38] text-gray-300 border border-gray-800 transition-all";
+                }
+            });
+
+            renderCatalog();
+        }
+
+        // Search bar filter handling
+        function filterItems() {
+            searchQuery = document.getElementById('searchInput').value;
+            renderCatalog();
+        }
+
+        // Open detail modal
+        function openModal(id) {
+            const item = catalogData.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modalImg').src = item.image;
+            document.getElementById('modalCategoryBadge').textContent = item.category;
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalLocation').textContent = item.location;
+            document.getElementById('modalStats').textContent = item.stats;
+
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        // Close detail modal
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Open Form Modal
+        function openFormModal() {
+            const modal = document.getElementById('formModal');
+            const content = document.getElementById('formModalContent');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        // Close Form Modal
+        function closeFormModal() {
+            const modal = document.getElementById('formModal');
+            const content = document.getElementById('formModalContent');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Handle Form Submission (adds item to catalog dynamically & saves to localStorage)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('inputName').value;
+            const category = document.getElementById('inputCategory').value;
+            const location = document.getElementById('inputLocation').value;
+            const stats = document.getElementById('inputStats').value;
+            const description = document.getElementById('inputDescription').value;
+
+            const newItem = {
+                id: catalogData.length > 0 ? Math.max(...catalogData.map(i => i.id)) + 1 : 1,
+                name: name,
+                category: category,
+                description: description,
+                location: location,
+                stats: stats,
+                badge: "Novo Registro",
+                image: `https://placehold.co/400x400/161821/d4af37?text=${encodeURIComponent(name)}`
+            };
+
+            catalogData.unshift(newItem);
+            saveToLocalStorage();
+            renderCatalog();
+            closeFormModal();
+            event.target.reset();
+        }
+
+        // Close modals clicking outside
+        window.onclick = function(event) {
+            const detailModal = document.getElementById('detailModal');
+            const formModal = document.getElementById('formModal');
+            if (event.target === detailModal) {
+                closeModal();
+            }
+            if (event.target === formModal) {
+                closeFormModal();
+            }
+        }
+
+        // Initial render on window load
+        window.onload = function() {
+            renderCatalog();
+        }
+    </script>
+</body>
+</html>
